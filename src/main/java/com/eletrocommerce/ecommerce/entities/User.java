@@ -1,10 +1,14 @@
 package com.eletrocommerce.ecommerce.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,11 +37,24 @@ public class User {
     @Column
     private String roles;
 
+    @OneToMany(mappedBy = "client") // "client" respeitando o nome da propriedade do tipo User na classe Order (User client)
+    private List<Order> orders = new ArrayList<>();
+    // Order é mapeado como uma coleção por conta do relacionamento de um (user) para muitos (order) 
+    // -- Usuario pode ter uma coleção de pedidos
+
+
+
+
+
     public User(){
 
     }
 
-    public User(Long id, String name, String email,String phone, String birthDate, String password, String roles){
+
+
+
+
+    public User(Long id, String name, String email,String phone, String birthDate, String password, String roles, List<Order> orders){
         this.Id = id;
         this.name = name;
         this.email = email;
@@ -45,7 +62,13 @@ public class User {
         this.birthDate = birthDate;
         this.passwoard = password;
         this.roles = roles;
+        this.orders = orders;
     }
+
+
+
+
+
 
     public Long getId() {
         return Id;
@@ -103,6 +126,20 @@ public class User {
         this.roles = roles;
     }
 
+
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+
+
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -114,8 +151,13 @@ public class User {
         result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
         result = prime * result + ((passwoard == null) ? 0 : passwoard.hashCode());
         result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+        result = prime * result + ((orders == null) ? 0 : orders.hashCode());
         return result;
     }
+
+
+
+
 
     @Override
     public boolean equals(Object obj) {
@@ -161,10 +203,18 @@ public class User {
                 return false;
         } else if (!roles.equals(other.roles))
             return false;
+        if (orders == null) {
+            if (other.orders != null)
+                return false;
+        } else if (!orders.equals(other.orders))
+            return false;
         return true;
     }
 
 
+
+
+    
     
 
 
